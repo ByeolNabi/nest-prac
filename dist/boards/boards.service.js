@@ -17,7 +17,8 @@ let BoardsService = class BoardsService {
     getAllBoards() {
         return this.boards;
     }
-    createBoard(title, description) {
+    createBoard(createBoardDto) {
+        const { title, description } = createBoardDto;
         const board = {
             id: (0, uuid_1.v1)(),
             title,
@@ -25,6 +26,22 @@ let BoardsService = class BoardsService {
             status: board_model_1.BoardStatus.PUBLIC,
         };
         this.boards.push(board);
+        return board;
+    }
+    getBoardById(id) {
+        const found = this.boards.find((board) => board.id === id);
+        if (!found) {
+            throw new common_1.NotFoundException(`Can't find Board with id ${id}`);
+        }
+        return found;
+    }
+    deleteBoard(id) {
+        const found = this.getBoardById(id);
+        this.boards = this.boards.filter((board) => board.id !== found.id);
+    }
+    updateBoardStatus(id, status) {
+        const board = this.getBoardById(id);
+        board.status = status;
         return board;
     }
 };
