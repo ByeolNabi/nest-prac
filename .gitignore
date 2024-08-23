@@ -46,5 +46,7 @@ yarn-error.log
 /benchmarks/memory
 build/config\.gypi
 
+dist/
+
 .npmrc
 pnpm-lock.yaml
