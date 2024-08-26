@@ -1,5 +1,6 @@
 # dependencies
 node_modules/
+dist/
 
 # IDE
 /.idea
@@ -45,8 +46,6 @@ yarn-error.log
 /packages/graphql
 /benchmarks/memory
 build/config\.gypi
-
-dist/
 
 .npmrc
 pnpm-lock.yaml
