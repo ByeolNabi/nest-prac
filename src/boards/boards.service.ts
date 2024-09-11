@@ -11,8 +11,15 @@ import { User } from 'src/auth/user.entity';
 export class BoardsService {
   constructor(private boardRepository: BoardRepository) {}
 
-  async getAllBoards(): Promise<Board[]> {
-    return this.boardRepository.find();
+  async getAllBoards(user: User): Promise<Board[]> {
+    const query = this.boardRepository.createQueryBuilder('board');
+
+    query.where('board.userId = :userId', { userId: 1 }); // WHERE board.userId = user.id
+    
+    const boards = await query.getMany(); // 결과 다 받기 // getOneOrFail() :하나만 가져오기 또는 에러 날리기
+
+    return boards;
+    //return this.boardRepository.find(); // 전체 조회
   }
   // getAllBoards(): Board[] {
   //   return this.boards;
