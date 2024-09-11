@@ -14,8 +14,8 @@ export class BoardsService {
   async getAllBoards(user: User): Promise<Board[]> {
     const query = this.boardRepository.createQueryBuilder('board');
 
-    query.where('board.userId = :userId', { userId: 1 }); // WHERE board.userId = user.id
-    
+    query.where('board.userId = :userId', { userId: user.id }); // WHERE board.userId = user.id
+
     const boards = await query.getMany(); // 결과 다 받기 // getOneOrFail() :하나만 가져오기 또는 에러 날리기
 
     return boards;
@@ -49,11 +49,14 @@ export class BoardsService {
   //   return found;
   // }
 
-  async deleteBoard(id: number): Promise<void> {
-    const result = await this.boardRepository.delete(id);
+  async deleteBoard(id: number, user: User): Promise<void> {
+    const result = await this.boardRepository.delete({ user });
+    console.log(result);
 
     if (result.affected === 0) {
-      throw new NotFoundException(`Can't find Board with id ${id}`);
+      throw new NotFoundException(
+        `Can't find Board with id ${id}, user: ${user}`,
+      );
     }
 
     console.log('result', result);
